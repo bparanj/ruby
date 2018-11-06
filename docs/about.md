@@ -1,0 +1,3 @@
+# About
+
+This book covers the most essential concepts in Ruby. The goal is to provide a solid foundation to build upon. This book distills my Ruby programming knowledge into a concise and easy-to-read format. Repetition is key to learning Ruby. We will visit the concepts from different angles. You will get the most benefit out of the book if you work through every example as you read through the book.
