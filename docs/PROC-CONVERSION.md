@@ -1,8 +1,8 @@
 ## Proc-Block Conversions
 
-### Executing the Block
+### Executing a Block
 
-Ruby is capable of executing a block by taking a block in a method.
+Methods in Ruby are capable of taking a block. We can execute the code in the block by using the `yield` keyword.
 
 ```ruby
 def greeter
@@ -16,7 +16,7 @@ We need to use `yield` inside the greeter method to execute the code in the bloc
 
 ### Ruby Creating a Proc Object from Block 
 
-Ruby can create a Proc object from a Block for us. We need to prefix the method argument with ampersand.
+Ruby can create a Proc object from a block for us. For this to happen, we need to prefix the block with an ampersand. You can see the syntax in line 1:
 
 ```ruby
 def greeter(&block)
@@ -27,11 +27,13 @@ greet = greeter { puts 'hello' }
 greet.call
 ```
 
+This is another way to execute the code in the block. In this case, we converted a block to a Proc object and invoked the call method on the Proc object returned by the greeter method.
+
 ::: tip SELF DISCOVERY
 Print the class name of the block before the block is returned. What is the output?
 :::
 
-We can also call the Proc inside the method.
+Instead of returning the Proc object. We can also call the Proc inside the method.
 
 ```ruby
 def greeter(&block)
@@ -39,6 +41,27 @@ def greeter(&block)
 end
 
 greeter  { puts 'hello' }
+```
+
+The `block.call` is an alternative to using `yield` to execute a block. 
+
+::: warning Missing Block
+
+In both cases, if you don't provide a block, you will get an error. 
+:::
+
+We can use `block_given?` to prevent the program from crashing.
+
+```ruby
+def greeter
+  yield if block_given?
+end
+```
+
+```ruby
+def greeter
+  block.call if block_given?
+end
 ```
 
 ### Converting a Proc to a Block
@@ -61,7 +84,7 @@ greet = Proc.new { puts 'hello' }
 greet.call
 ```
 
-The line:
+The point is this line:
 
 ```ruby
 Proc.new(&block)
@@ -73,13 +96,27 @@ is equivalent to :
 Proc.new { puts 'hello' }
 ```
 
-In line 1 `greeter(&block)`, the `greeter` method is not taking an argument. Eventhough the syntax looks like an argument block is passed in because we are using the brackets ( ). As you can see when we call the greeter method, we are not passing an argument:
+In line 1 `greeter(&block)`, the `greeter` method is not taking an argument. Eventhough the syntax looks like an argument block is passed in because we are using the brackets ( ) in the greeter method definition. As you can see when we call the greeter method, we are not passing an argument:
 
 ```ruby
 greeter { puts 'hello' }
 ```
 
-The greeter does not have an argument. Only the block is provided. Similarly, the Proc constructor is not taking an argument:
+The greeter does not have an argument. Only the block is provided. The code can be re-written:
+
+```ruby
+greeter() { puts 'hello' }
+```
+
+Ruby allows us not to use the empty paranthesis if there are no arguments. We can ask Ruby to print the number of arguments of the greeter method.
+
+```ruby
+p self.method(:greeter).arity
+```
+
+This prints 0. 
+
+Similarly, the Proc constructor is not taking an argument:
 
 ```ruby
 Proc.new(&block)
@@ -94,7 +131,7 @@ def greeter(&block)
 end
 ```
 
-This will print `Proc`. When the & is prefixed to a Proc object, it gets converted to a block.
+This will print `Proc`. When the `&` is prefixed to a Proc object, it gets converted to a block.
 
 ::: tip Block to Proc
 
@@ -109,7 +146,7 @@ Prefixing & to a Proc object converts a Proc object to a block
 
 ### Converting a Proc to a Block
 
-A simple example illustrating how to convert a Proc object to a block by prefixing a Proc object with ampersand.
+A simple example to illustrate how to convert a Proc object to a block by prefixing a Proc object with ampersand.
 
 ```ruby
 def greeter
@@ -119,6 +156,8 @@ end
 proc = Proc.new { puts 'hello' }
 greeter(&proc)
 ```
+
+In line 5, we create a Proc object explicitly from a block. In line 6, prefixing ampersand on proc converts the proc object to a block.
 
 Compare this with the first code example.
 
@@ -141,3 +180,5 @@ to
 greeter { puts 'hello' }
 
 :::
+
+In this chapter, we discussed the significance of the ampersand in the conversion of block to a Proc object and vice-versa. 
