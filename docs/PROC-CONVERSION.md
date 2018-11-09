@@ -45,7 +45,32 @@ greeter  { puts 'hello' }
 
 The `block.call` is an alternative to using `yield` to execute a block. 
 
-::: warning Missing Block
+::: tip SELF DISCOVERY
+
+What happens when you run the code without providing a block?
+:::
+
+What error do you get, if you run:
+
+```ruby
+def greeter(&block)
+  block.call
+end
+
+greeter  
+```
+
+and
+
+```ruby
+def greeter
+  yield
+end
+
+greeter
+```
+
+::: warning MISSING BLOCK
 
 In both cases, if you don't provide a block, you will get an error. 
 :::
